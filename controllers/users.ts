@@ -5,8 +5,11 @@ const express = require('express');
 const router = new express.Router();
 
 router.get('/users', (req, res) => {
-    db.query("SELECT * FROM users", (err, data: User[]) => {
-        if (err) return console.log(err);
+    db.query("SELECT * FROM userds", (err, data: User[]) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send();
+        }
         res.send(data);
     });
 });
