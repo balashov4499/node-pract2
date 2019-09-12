@@ -1,0 +1,28 @@
+{
+  "name": "node-practice2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec ts-node main.ts",
+    "generate": "tsoa routes && tsoa swagger"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.6",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^1.7.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/mysql": "^2.15.7",
+    "@types/node": "^12.7.5",
+    "nodemon": "^1.19.2"
+  }
+}
