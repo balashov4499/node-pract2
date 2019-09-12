@@ -26,7 +26,9 @@
 			},
 			"required": [
 				"email",
-				"password"
+				"password",
+				"firstName",
+				"lastName"
 			],
 			"type": "object"
 		}
@@ -41,6 +43,7 @@
 	"paths": {
 		"/users": {
 			"get": {
+				"summary": "Get all users",
 				"produces": [
 					"application/json"
 				],
@@ -57,7 +60,124 @@
 				},
 				"security": [],
 				"parameters": []
+			},
+			"post": {
+				"summary": "Create new user",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/User"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "new user",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
 			}
+		},
+		"/users/{id}": {
+			"get": {
+				"summary": "Get user by id",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/User"
+							},
+							"type": "object"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "number"
+					}
+				]
+			},
+			"put": {
+				"summary": "Update user by id",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/User"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "number"
+					},
+					{
+						"in": "body",
+						"name": "new user",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					}
+				]
+			},
+			"delete": {
+				"summary": "Delete user by id",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/User"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "number"
+					}
+				]
+			}
+
 		}
 	},
 	"produces": [
