@@ -15,5 +15,11 @@
   ],
   "subscribers": [
     "subscriber/*.ts"
-  ]
+  ],
+  "cli" : {
+    "entitiesDir": "models",
+    "migrationsDir": "migration",
+    "subscribersDir": "subscriber"
+  }
+
 }
