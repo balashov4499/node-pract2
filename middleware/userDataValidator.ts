@@ -1,4 +1,3 @@
-import validator from 'validator';
 import Joi from '@hapi/joi';
 import PasswordComplexity from 'joi-password-complexity';
 
