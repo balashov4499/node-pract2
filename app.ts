@@ -13,9 +13,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(userRouter);
 app.use((err, req, res, next) => {
-    if (res.headersSent) {
-        return next(err);
-    }
     res.status(500);
     res.json({ error: err });
 });
