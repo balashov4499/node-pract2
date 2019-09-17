@@ -12,12 +12,11 @@ router.get('/users', async (req, res) => {
 });
 
 router.post('/users', validateUser, wrapAsync(async function (req, res) {
-    const hashedPassword = await bcrypt.hash(req.body.password, 8);
     const user = new User();
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     user.email = req.body.email;
-    user.password = hashedPassword;
+    user.password = req.body.password;
     await User.save(user);
     res.status(201).send(user);
 }));
@@ -29,10 +28,11 @@ router.get('/users/:id', async (req, res) => {
 });
 
 router.put('/users/:id', validateUser, wrapAsync(async function (req, res) {
-    const updated = await User.update(req.params.id, {...req.body});
-    if (updated.raw.affectedRows === 0) {
-        res.status(404).send({error: 'No user with provided id'});
-    }
+    const user = await User.findOne({id: req.params.id});
+    if (!user)  return res.status(404).send({error: 'No user with provided id'});
+    const keysToUpdate = Object.keys(req.body);
+    keysToUpdate.forEach((key) => user[key] = req.body[key])
+    const updated = await User.save(user);
     res.status(201).send()
 }));
 
