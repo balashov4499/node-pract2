@@ -1,188 +1,246 @@
 {
-	"basePath": "/",
-	"consumes": [
-		"application/json"
-	],
-	"definitions": {
-		"User": {
-			"properties": {
-				"id": {
-					"type": "number",
-					"format": "double",
-					"x-nullable": true
-				},
-				"email": {
-					"type": "string"
-				},
-				"password": {
-					"type": "string"
-				},
-				"lastName": {
-					"type": "string"
-				},
-				"firstName": {
-					"type": "string"
-				}
-			},
-			"required": [
-				"email",
-				"password",
-				"firstName",
-				"lastName"
-			],
-			"type": "object"
-		}
-	},
-	"info": {
-		"title": "node-practice",
-		"version": "1.0.0",
-		"license": {
-			"name": "ISC"
-		}
-	},
-	"paths": {
-		"/users": {
-			"get": {
-				"summary": "Get all users",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/User"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			},
-			"post": {
-				"summary": "Create new user",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"201": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/User"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "body",
-						"name": "new user",
-						"required": true,
-						"schema": {
-							"type": "object"
-						}
-					}
-				]
-			}
-		},
-		"/users/{id}": {
-			"get": {
-				"summary": "Get user by id",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/User"
-							},
-							"type": "object"
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "number"
-					}
-				]
-			},
-			"put": {
-				"summary": "Update user by id",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"201": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/User"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "number"
-					},
-					{
-						"in": "body",
-						"name": "new user",
-						"required": true,
-						"schema": {
-							"type": "object"
-						}
-					}
-				]
-			},
-			"delete": {
-				"summary": "Delete user by id",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"201": {
-						"description": "Ok",
-						"schema": {
-							"items": {
-								"$ref": "#/definitions/User"
-							},
-							"type": "array"
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "number"
-					}
-				]
-			}
-
-		}
-	},
-	"produces": [
-		"application/json"
-	],
-	"swagger": "2.0",
-	"securityDefinitions": {}
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "definitions": {
+    "User": {
+      "properties": {
+        "id": {
+          "type": "number",
+          "format": "double",
+          "x-nullable": true
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "password",
+        "firstName",
+        "lastName"
+      ],
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "info": {
+    "title": "node-practice",
+    "version": "1.0.0",
+    "license": {
+      "name": "ISC"
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Get all users",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "parameters": []
+      },
+      "post": {
+        "summary": "Create new user",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "new user",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login as user",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user credentials",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ]
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "summary": "Logout",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update user by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "body",
+            "name": "new user",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete user by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          }
+        ]
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "swagger": "2.0"
 }

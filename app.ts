@@ -13,8 +13,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(userRouter);
 app.use((err, req, res, next) => {
-    res.status(500);
-    res.json({ error: err });
+    res.status(400).send({ error: err.toString() });
 });
 
 export default app;
