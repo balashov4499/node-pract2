@@ -33,7 +33,7 @@ router.put('/users/:id', validateUser, wrapAsync(async function (req, res) {
     const keysToUpdate = Object.keys(req.body);
     keysToUpdate.forEach((key) => user[key] = req.body[key])
     const updated = await User.save(user);
-    res.status(201).send()
+    res.status(201).send(updated)
 }));
 
 router.delete('/users/:id', async (req, res) => {
