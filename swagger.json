@@ -1,4 +1,19 @@
 {
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Node practice",
+    "description": "Test project to create simple e-shop backend",
+    "contact": {
+      "name": "Swagger API Team",
+      "email": "apiteam@swagger.io",
+      "url": "http://swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
   "basePath": "/",
   "consumes": [
     "application/json"
@@ -45,16 +60,10 @@
       "Bearer": []
     }
   ],
-  "info": {
-    "title": "node-practice",
-    "version": "1.0.0",
-    "license": {
-      "name": "ISC"
-    }
-  },
   "paths": {
     "/users": {
       "get": {
+        "tags": ["users"],
         "summary": "Get all users",
         "produces": [
           "application/json"
@@ -73,6 +82,7 @@
         "parameters": []
       },
       "post": {
+        "tags": ["users"],
         "summary": "Create new user",
         "produces": [
           "application/json"
@@ -103,6 +113,7 @@
     },
     "/users/login": {
       "post": {
+        "tags": ["auth"],
         "summary": "Login as user",
         "produces": [
           "application/json"
@@ -133,6 +144,7 @@
     },
     "/users/logout": {
       "post": {
+        "tags": ["auth"],
         "summary": "Logout",
         "produces": [
           "application/json"
@@ -152,6 +164,7 @@
     },
     "/users/{id}": {
       "get": {
+        "tags": ["user"],
         "summary": "Get user by id",
         "produces": [
           "application/json"
@@ -178,6 +191,7 @@
         ]
       },
       "put": {
+        "tags": ["user"],
         "summary": "Update user by id",
         "produces": [
           "application/json"
@@ -212,6 +226,7 @@
         ]
       },
       "delete": {
+        "tags": ["user"],
         "summary": "Delete user by id",
         "produces": [
           "application/json"
@@ -241,6 +256,5 @@
   },
   "produces": [
     "application/json"
-  ],
-  "swagger": "2.0"
+  ]
 }
