@@ -4,6 +4,7 @@ import wrapAsync from '../middleware/requestFunctionsWrapper';
 import auth from '../middleware/auth';
 import {User, UserRole} from '../models/user';
 import {validateCategory} from '../middleware/categoryDataValidator';
+import {Product} from '../models/product';
 
 const express = require('express');
 const router = new express.Router();
@@ -24,7 +25,8 @@ router.get('/categories/:id', async (req, res) => {
     const category = await Category.createQueryBuilder('category')
         .where("category.id = :id", {id: selectedCategory})
         .leftJoinAndSelect('category.childCategories', 'subCategory')
-        .getMany();
+        .getOne();
+    if (!category) return res.status(404).send({error: 'No category with provided id'});
     return res.send(category);
 });
 
@@ -73,6 +75,39 @@ router.delete('/categories/:id', async (req, res) => {
     }
     const result: DeleteResult = await Category.delete(req.params.id);
     res.status(200).send();
+});
+
+router.get('/categories/products/:id', async (req, res) => {
+    const selectedCategory = req.params.id;
+    const category = await Category.createQueryBuilder('category')
+        .where("category.id = :id", {id: selectedCategory})
+        .leftJoinAndSelect('category.childCategories', 'subCategory')
+        .getOne();
+
+    if (!category) return res.status(404).send({error: 'No category with provided id'});
+
+    return res.send(category.products);
+});
+
+router.post('/categories/products/:id', async (req, res) => {
+    const selectedCategory = req.params.id;
+    const category: Category = await Category.createQueryBuilder('category')
+        .where("category.id = :id", {id: selectedCategory})
+        .leftJoinAndSelect('category.childCategories', 'subCategory')
+        .getOne();
+
+    if (!category) return res.status(404).send({error: 'No category with provided id'});
+    if (category.childCategories && category.childCategories.length > 0 ) {
+        return res.status(400).send({error: 'Restricted to add products to categories with subcategories'});
+    }
+    const product = new Product();
+    product.name = req.body.name;
+    product.description = req.body.description;
+    product.categories = [];
+    product.categories.push(category);
+
+    await product.save();
+    return res.send(product);
 });
 
 

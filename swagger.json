@@ -74,6 +74,28 @@
         "name"
       ],
       "type": "object"
+    },
+    "Product": {
+      "properties": {
+        "id": {
+          "type": "number",
+          "format": "double",
+          "x-nullable": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "categories": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
     }
   },
   "securityDefinitions": {
@@ -91,7 +113,9 @@
   "paths": {
     "/users": {
       "get": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Get all users",
         "produces": [
           "application/json"
@@ -110,7 +134,9 @@
         "parameters": []
       },
       "post": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Create new user",
         "produces": [
           "application/json"
@@ -141,7 +167,9 @@
     },
     "/users/login": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Login as user",
         "produces": [
           "application/json"
@@ -172,7 +200,9 @@
     },
     "/users/logout": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Logout",
         "produces": [
           "application/json"
@@ -192,7 +222,9 @@
     },
     "/users/{id}": {
       "get": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "Get user by id",
         "produces": [
           "application/json"
@@ -219,7 +251,9 @@
         ]
       },
       "put": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "Update user by id",
         "produces": [
           "application/json"
@@ -254,7 +288,9 @@
         ]
       },
       "delete": {
-        "tags": ["user"],
+        "tags": [
+          "user"
+        ],
         "summary": "Delete user by id",
         "produces": [
           "application/json"
@@ -283,7 +319,9 @@
     },
     "/categories": {
       "get": {
-        "tags": ["categories"],
+        "tags": [
+          "categories"
+        ],
         "summary": "Get all root categories",
         "produces": [
           "application/json"
@@ -302,7 +340,9 @@
         "parameters": []
       },
       "post": {
-        "tags": ["categories"],
+        "tags": [
+          "categories"
+        ],
         "summary": "Create new category",
         "produces": [
           "application/json"
@@ -362,7 +402,9 @@
         ]
       },
       "put": {
-        "tags": ["categories"],
+        "tags": [
+          "categories"
+        ],
         "summary": "Update category by id",
         "produces": [
           "application/json"
@@ -397,7 +439,9 @@
         ]
       },
       "delete": {
-        "tags": ["categories"],
+        "tags": [
+          "categories"
+        ],
         "summary": "Delete category by id",
         "produces": [
           "application/json"
@@ -420,6 +464,73 @@
             "name": "id",
             "required": true,
             "type": "number"
+          }
+        ]
+      }
+    },
+    "/categories/products/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get all category products",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Product"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Create new product",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Category"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "body",
+            "name": "new product",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
           }
         ]
       }
