@@ -1,11 +1,13 @@
 import Joi from '@hapi/joi';
 import PasswordComplexity from 'joi-password-complexity';
+import {UserRole} from '../models/user';
 
 const newUser = Joi.object({
     password: Joi.string().required(),
     email: Joi.string().email().required(),
     firstName: Joi.string().required(),
-    lastName: Joi.string().required()
+    lastName: Joi.string().required(),
+    role: Joi.string().valid([UserRole.ADMIN, UserRole.CUSTOMER]).required()
 });
 
 const updateSchema = newUser.optionalKeys("password", "email", "firstName", "lastName");

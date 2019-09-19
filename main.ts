@@ -5,10 +5,13 @@ import "reflect-metadata";
 
 const PORT = 3000;
 
-createConnection().then(()=>console.log('db connected')).catch(error => console.log(error));
+createConnection().then((conn) => {
+    console.log('db connected');
+    // await conn.runMigrations();
+}).catch(error => console.log(error));
 
 const server = http.createServer(app);
 server.listen(PORT);
-server.on('listening', ()=>{
+server.on('listening', () => {
     console.info(`Listening ${PORT}`);
 });

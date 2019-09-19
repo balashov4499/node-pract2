@@ -5,7 +5,7 @@
   "username": "root",
   "password": "1234",
   "database": "nodepract",
-  "synchronize": true,
+  "synchronize": false,
   "logging": false,
   "entities": [
     "models/*.ts"

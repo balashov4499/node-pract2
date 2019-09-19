@@ -20,6 +20,7 @@ router.post('/users', validateUser, wrapAsync(async function (req, res) {
     user.lastName = req.body.lastName;
     user.email = req.body.email;
     user.password = req.body.password;
+    user.role = req.body.role;
     await User.save(user);
     res.status(201).send(user);
 }));

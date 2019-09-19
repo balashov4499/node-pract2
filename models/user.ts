@@ -1,6 +1,11 @@
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, BeforeInsert, BeforeUpdate} from "typeorm";
 import bcrypt from 'bcryptjs';
 
+export enum UserRole {
+    ADMIN = "admin",
+    CUSTOMER = "customer"
+}
+
 @Entity()
 export class User extends BaseEntity {
 
@@ -21,6 +26,13 @@ export class User extends BaseEntity {
 
     @Column({type: 'text', nullable: true})
     token: string;
+
+    @Column({
+        type: "enum",
+        enum: UserRole,
+        default: UserRole.CUSTOMER
+    })
+    role: UserRole;
 
     @BeforeInsert()
     @BeforeUpdate()
