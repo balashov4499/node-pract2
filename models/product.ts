@@ -13,7 +13,8 @@ export class Product extends BaseEntity {
     @Column({type: 'varchar', length: 255,})
     description: string;
 
-    @ManyToMany(type => Category, category => category.products, {cascade: true})
+    @ManyToMany(type => Category, category => category.products,
+        {cascade: true, eager: true})
     @JoinTable()
     categories: Category[];
 

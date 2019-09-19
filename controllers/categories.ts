@@ -81,12 +81,16 @@ router.get('/categories/products/:id', async (req, res) => {
     const selectedCategory = req.params.id;
     const category = await Category.createQueryBuilder('category')
         .where("category.id = :id", {id: selectedCategory})
-        .leftJoinAndSelect('category.childCategories', 'subCategory')
         .getOne();
-
     if (!category) return res.status(404).send({error: 'No category with provided id'});
 
-    return res.send(category.products);
+   // const products = await Category.find(selectedCategory, { relations: ["products"] });
+    const products = await Category
+        .createQueryBuilder("category")
+        .where("category.id = :id", {id: selectedCategory})
+        .leftJoinAndSelect("category.products", "products")
+        .getOne();
+    return res.send(products);
 });
 
 router.post('/categories/products/:id', async (req, res) => {
