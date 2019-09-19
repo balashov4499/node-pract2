@@ -40,4 +40,13 @@ export class User extends BaseEntity {
         this.password = await bcrypt.hash(this.password, 8);
     }
 
+    static async findByCredentials(email, password): Promise<User> {
+        const user = await User.findOne({email});
+        if (!user) throw new Error('unable to login');
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) throw new Error('unable to login');
+        return user;
+    }
+
+
 }
