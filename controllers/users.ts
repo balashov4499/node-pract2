@@ -1,6 +1,6 @@
 import {User, UserRole} from '../models/user';
 import {DeleteResult} from 'typeorm';
-import {isAdmin, validateUser} from '../middleware/userDataValidator';
+import {isAdmin, validateUser} from '../middleware/validators/userDataValidator';
 import wrapAsync from '../middleware/requestFunctionsWrapper';
 import jwt from 'jsonwebtoken'
 import auth from '../middleware/auth';

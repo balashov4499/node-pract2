@@ -3,7 +3,7 @@ import {DeleteResult} from 'typeorm';
 import wrapAsync from '../middleware/requestFunctionsWrapper';
 import {Product} from '../models/product';
 import auth from '../middleware/auth';
-import {isAdmin} from '../middleware/userDataValidator';
+import {isAdmin} from '../middleware/validators/userDataValidator';
 
 
 const express = require('express');

@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi';
 import PasswordComplexity from 'joi-password-complexity';
-import {UserRole} from '../models/user';
+import {UserRole} from '../../models/user';
 
 const newUser = Joi.object({
     password: Joi.string().required(),

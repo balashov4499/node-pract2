@@ -2,10 +2,10 @@ import {Category} from '../models/category';
 import {DeleteResult} from 'typeorm';
 import wrapAsync from '../middleware/requestFunctionsWrapper';
 import auth from '../middleware/auth';
-import {validateCategory} from '../middleware/categoryDataValidator';
+import {validateCategory} from '../middleware/validators/categoryDataValidator';
 import {Product} from '../models/product';
-import {validateNewProduct} from '../middleware/productDataValidator';
-import {isAdmin} from '../middleware/userDataValidator';
+import {validateNewProduct} from '../middleware/validators/productDataValidator';
+import {isAdmin} from '../middleware/validators/userDataValidator';
 
 const express = require('express');
 const router = new express.Router();

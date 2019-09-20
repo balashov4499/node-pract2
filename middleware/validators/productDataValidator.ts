@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import {Product} from '../models/product';
+import {Product} from '../../models/product';
 import {newCategory} from './categoryDataValidator';
 
 
