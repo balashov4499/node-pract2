@@ -2,17 +2,15 @@ import {Category} from '../models/category';
 import {DeleteResult} from 'typeorm';
 import wrapAsync from '../middleware/requestFunctionsWrapper';
 import auth from '../middleware/auth';
-import {User, UserRole} from '../models/user';
 import {validateCategory} from '../middleware/categoryDataValidator';
 import {Product} from '../models/product';
+import {validateNewProduct} from '../middleware/productDataValidator';
+import {isAdmin} from '../middleware/userDataValidator';
 
 const express = require('express');
 const router = new express.Router();
 
 router.get('/categories',async (req, res) => {
-    // if (!(req.user.role === UserRole.ADMIN)) {
-    //     return res.status(403).send('Not allowed');
-    // }
     let allCategories = await Category.createQueryBuilder('category')
         .andWhere('category.parentCategory IS NULL')
         .leftJoinAndSelect('category.childCategories', 'subCategory')
@@ -30,13 +28,13 @@ router.get('/categories/:id', async (req, res) => {
     return res.send(category);
 });
 
-router.post('/categories', validateCategory, wrapAsync(async function (req, res) {
+router.post('/categories', auth, isAdmin, validateCategory, wrapAsync(async function (req, res) {
     const category = new Category();
     category.name = req.body.name;
     category.description = req.body.description;
 
     if (req.body.parentCategory) {
-        const parentCategory: Category = await Category.findOne({name: req.body.parentCategory});
+        const parentCategory: Category = await Category.findOne({id: req.body.parentCategory});
         if (parentCategory) {
             category.parentCategory = parentCategory;
         } else {
@@ -47,7 +45,7 @@ router.post('/categories', validateCategory, wrapAsync(async function (req, res)
     return res.status(201).send(category);
 }));
 
-router.put('/categories/:id', validateCategory, wrapAsync(async function (req, res) {
+router.put('/categories/:id', auth, isAdmin, validateCategory, wrapAsync(async function (req, res) {
     const categoryToRemoveId = req.params.id;
     const category: Category = await Category.createQueryBuilder('category')
         .where("category.id = :id", {id: categoryToRemoveId})
@@ -62,10 +60,11 @@ router.put('/categories/:id', validateCategory, wrapAsync(async function (req, r
 
 }));
 
-router.delete('/categories/:id', async (req, res) => {
+router.delete('/categories/:id', auth, isAdmin, async (req, res) => {
     const categoryToRemoveId = req.params.id;
     const category: Category = await Category.createQueryBuilder('category')
         .where("category.id = :id", {id: categoryToRemoveId})
+        .leftJoinAndSelect('category.childCategories', 'subCategory')
         .getOne();
     if (!category) {
         return res.status(404).send({error: 'No category with provided id'});
@@ -84,16 +83,16 @@ router.get('/categories/products/:id', async (req, res) => {
         .getOne();
     if (!category) return res.status(404).send({error: 'No category with provided id'});
 
-   // const products = await Category.find(selectedCategory, { relations: ["products"] });
     const products = await Category
         .createQueryBuilder("category")
         .where("category.id = :id", {id: selectedCategory})
+        .leftJoinAndSelect('category.childCategories', 'subCategory')
         .leftJoinAndSelect("category.products", "products")
         .getOne();
     return res.send(products);
 });
 
-router.post('/categories/products/:id', async (req, res) => {
+router.post('/categories/products/:id', auth, isAdmin, validateNewProduct, async (req, res) => {
     const selectedCategory = req.params.id;
     const category: Category = await Category.createQueryBuilder('category')
         .where("category.id = :id", {id: selectedCategory})
@@ -101,14 +100,13 @@ router.post('/categories/products/:id', async (req, res) => {
         .getOne();
 
     if (!category) return res.status(404).send({error: 'No category with provided id'});
-    if (category.childCategories && category.childCategories.length > 0 ) {
-        return res.status(400).send({error: 'Restricted to add products to categories with subcategories'});
-    }
+    // if (category.childCategories && category.childCategories.length > 0 ) {
+    //     return res.status(400).send({error: 'Restricted to add products to categories with subcategories'});
+    // }
     const product = new Product();
     product.name = req.body.name;
     product.description = req.body.description;
-    product.categories = [];
-    product.categories.push(category);
+    product.categories = [category];
 
     await product.save();
     return res.send(product);

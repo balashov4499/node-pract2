@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import userRouter from './controllers/users';
 import categoryRouter from './controllers/categories';
+import productRouter from './controllers/products';
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(userRouter);
 app.use(categoryRouter);
+app.use(productRouter);
 app.use((err, req, res, next) => {
     res.status(400).send({ error: err.toString() });
 });

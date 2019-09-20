@@ -152,7 +152,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "body",
@@ -185,7 +184,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "body",
@@ -240,7 +238,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -269,7 +266,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -306,7 +302,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -358,7 +353,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "body",
@@ -391,7 +385,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -420,7 +413,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -457,7 +449,6 @@
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -510,13 +501,12 @@
             "description": "Ok",
             "schema": {
               "items": {
-                "$ref": "#/definitions/Category"
+                "$ref": "#/definitions/Product"
               },
               "type": "array"
             }
           }
         },
-        "security": [],
         "parameters": [
           {
             "in": "path",
@@ -527,6 +517,154 @@
           {
             "in": "body",
             "name": "new product",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ]
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get product by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Product"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Update product by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Product"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "body",
+            "name": "product updates",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Delete product by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Product"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          }
+        ]
+      }
+    },
+    "/user/me": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Get current user",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "parameters": [
+        ]
+      },
+      "put": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Update current user",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "current user updates",
             "required": true,
             "schema": {
               "type": "object"

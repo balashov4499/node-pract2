@@ -1,8 +1,9 @@
 import Joi from '@hapi/joi';
 
-const newCategory = Joi.object({
+export const newCategory = Joi.object({
     name: Joi.string().min(2).max(55).required(),
-    description: Joi.string()
+    description: Joi.string(),
+    parentCategory: Joi.string()
 });
 
 const updateSchema = newCategory.optionalKeys("name");
@@ -17,4 +18,4 @@ export const validateCategory = async (req, res, next) => {
     next();
 };
 
-module.exports = {validateCategory};
+module.exports = {validateCategory, newCategory};

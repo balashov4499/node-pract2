@@ -10,7 +10,7 @@ const newUser = Joi.object({
     role: Joi.string().valid([UserRole.ADMIN, UserRole.CUSTOMER]).required()
 });
 
-const updateSchema = newUser.optionalKeys("password", "email", "firstName", "lastName");
+const updateSchema = newUser.optionalKeys("password", "email", "firstName", "lastName", "role");
 
 export const validateUser = async (req, res, next) => {
     const schema = req.method === 'POST' ? newUser : updateSchema;
@@ -36,4 +36,11 @@ export const validateUser = async (req, res, next) => {
     next();
 };
 
-module.exports = {validateUser};
+export const isAdmin = async (req, res, next) => {
+    if (!(req.user.role === UserRole.ADMIN)) {
+        return res.status(403).send('Not allowed');
+    }
+    next();
+};
+
+module.exports = {validateUser, isAdmin};

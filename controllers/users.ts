@@ -1,22 +1,18 @@
 import {User, UserRole} from '../models/user';
 import {DeleteResult} from 'typeorm';
-import {validateUser} from '../middleware/userDataValidator';
+import {isAdmin, validateUser} from '../middleware/userDataValidator';
 import wrapAsync from '../middleware/requestFunctionsWrapper';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
 import auth from '../middleware/auth';
 
 const express = require('express');
 const router = new express.Router();
 
-router.get('/users', auth, async (req, res) => {
-    if (!(req.user.role === UserRole.ADMIN)) {
-        return res.status(403).send('Not allowed');
-    }
+router.get('/users', auth, isAdmin, async (req, res) => {
     res.send(await User.find());
 });
 
-router.post('/users', validateUser, wrapAsync(async function (req, res) {
+router.post('/users', auth, isAdmin, validateUser, wrapAsync(async function (req, res) {
     const user = new User();
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
@@ -31,36 +27,51 @@ router.post('/users/login', wrapAsync(async function (req, res) {
     const user = await User.findByCredentials(req.body.email, req.body.password);
     user.token = jwt.sign({ id: user.id }, 'shhhhh');
     await User.update(user.id, {token: user.token});
-    res.status(200).send(user);
+    return res.status(200).send(user);
 }));
 
-router.post('/users/logout', auth,  wrapAsync(async function (req, res) {
+router.post('/users/logout', auth, wrapAsync(async function (req, res) {
     await User.update(req.user.id, {token: null});
-    res.status(200).send();
+    return res.status(200).send();
 }));
 
 
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:id', auth, isAdmin, async (req, res) => {
     const user = await User.findOne({id: req.params.id});
-    if (!user) res.status(404).send({error: 'No user with provided id'});
+    if (!user) return  res.status(404).send({error: 'No user with provided id'});
     res.send(user);
 });
 
-router.put('/users/:id', validateUser, wrapAsync(async function (req, res) {
+router.put('/users/:id', auth, isAdmin, validateUser, wrapAsync(async function (req, res) {
     const user = await User.findOne({id: req.params.id});
     if (!user) return res.status(404).send({error: 'No user with provided id'});
     const keysToUpdate = Object.keys(req.body);
     keysToUpdate.forEach((key) => user[key] = req.body[key]);
     const updated = await User.save(user);
-    res.status(201).send(updated)
+    return res.status(201).send(updated)
 }));
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', auth, isAdmin, async (req, res) => {
     const result: DeleteResult = await User.delete(req.params.id);
     if (result.raw.affectedRows === 0) {
-        res.status(404).send({error: 'No user with provided id'});
+        return res.status(404).send({error: 'No user with provided id'});
     }
-    res.status(200).send()
+    return res.status(200).send()
 });
+
+router.get('/user/me', auth, async (req, res) => {
+
+    res.send(req.user);
+});
+
+router.put('/user/me', auth, validateUser, wrapAsync(async function (req, res) {
+    const user = req.user;
+    const keysToUpdate = Object.keys(req.body);
+    keysToUpdate.forEach((key) => {
+        if (key!=='role') user[key] = req.body[key]
+    });
+    const updated = await User.save(user);
+    return res.status(201).send(updated)
+}));
 
 export default router;

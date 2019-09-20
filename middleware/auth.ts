@@ -5,7 +5,6 @@ export default async function auth(req, res, next) {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded: any = jwt.verify(token, 'shhhhh');
-
         const user = await User.findOne({id: decoded.id, token: token});
 
         if (!user) {
@@ -15,7 +14,7 @@ export default async function auth(req, res, next) {
         next();
 
     } catch (e) {
-        res.status(401).send({error: 'Please login'})
+        res.status(403).send({error: 'Please login'})
     }
 
 };
