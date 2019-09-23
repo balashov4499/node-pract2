@@ -3,18 +3,18 @@ import {Product} from '../../models/product';
 import {newCategory} from './categoryDataValidator';
 
 
-const newProduct = Joi.object({
+const product = Joi.object({
     name: Joi.string().min(2).max(55).required(),
     description: Joi.string(),
-    categories: Joi.array().items(Joi.string()).required()
+    categories: Joi.array().items(Joi.string())
 });
 
-const updateSchema = newProduct.optionalKeys("name", "categories");
+const updateSchema = product.optionalKeys("name",);
 
 export const validateNewProduct = async (req, res, next) => {
-    const schema = req.method === 'POST' ? newProduct : updateSchema;
+    const schema = req.method === 'POST' ? product : updateSchema;
     try {
-        await newProduct.validate(req.body);
+        await schema.validate(req.body);
     } catch (e) {
         return res.status(400).send({error: e.details});
     }

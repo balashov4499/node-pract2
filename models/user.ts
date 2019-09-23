@@ -1,5 +1,15 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, BeforeInsert, BeforeUpdate} from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    BaseEntity,
+    BeforeInsert,
+    BeforeUpdate,
+    OneToOne,
+    JoinColumn
+} from "typeorm";
 import bcrypt from 'bcryptjs';
+import {Card} from './card';
 
 export enum UserRole {
     ADMIN = "admin",
@@ -33,6 +43,10 @@ export class User extends BaseEntity {
         default: UserRole.CUSTOMER
     })
     role: UserRole;
+
+    @OneToOne(type => Card, card => card.user, {cascade: true, eager:true}) // specify inverse side as a second parameter
+    @JoinColumn()
+    card: Card;
 
     @BeforeInsert()
     @BeforeUpdate()

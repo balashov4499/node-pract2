@@ -38,9 +38,16 @@ export const validateUser = async (req, res, next) => {
 
 export const isAdmin = async (req, res, next) => {
     if (!(req.user.role === UserRole.ADMIN)) {
-        return res.status(403).send('Not allowed');
+        return res.status(403).send('Not allowed. Only for admins');
     }
     next();
 };
 
-module.exports = {validateUser, isAdmin};
+export const isCustomer = async (req, res, next) => {
+    if (!(req.user.role === UserRole.CUSTOMER)) {
+        return res.status(403).send('Not allowed. Only for customers');
+    }
+    next();
+};
+
+module.exports = {validateUser, isAdmin, isCustomer};

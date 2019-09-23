@@ -103,6 +103,7 @@ router.post('/categories/products/:id', auth, isAdmin, validateNewProduct, async
     // if (category.childCategories && category.childCategories.length > 0 ) {
     //     return res.status(400).send({error: 'Restricted to add products to categories with subcategories'});
     // }
+
     const product = new Product();
     product.name = req.body.name;
     product.description = req.body.description;

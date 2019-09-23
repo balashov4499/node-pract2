@@ -619,6 +619,54 @@
         ]
       }
     },
+    "/products/select/{id}/{quantity}": {
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Add product to user card",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "path",
+            "name": "quantity",
+            "required": true,
+            "type": "number"
+          }
+        ]
+      }
+    },
+    "/products/me/in-card": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get products in current user's card",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          }
+        }
+      }
+    },
     "/user/me": {
       "get": {
         "tags": [
@@ -673,6 +721,7 @@
         ]
       }
     }
+
   },
   "produces": [
     "application/json"
